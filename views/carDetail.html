@@ -1,0 +1,60 @@
+{% extends "main.html" %}
+{% block body %}
+<div class="container is-max-desktop">
+    <div class="notification is-primary">
+        <div class="card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="/{{ auto.imagen }}" alt="Imagen {{ auto.marca }} {{ auto.modelo }}">
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <img src="/{{ auto.imagen }}" alt="Imagen {{ auto.marca }} {{ auto.modelo }}">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">{{ auto.marca }} {{ auto.modelo }}</p>
+                  <p class="subtitle is-6">{{ auto.año }}</p>
+                </div>
+              </div>
+          
+              <div class="content">
+                <ul>
+                    <li><strong>kms: </strong>{{ auto.kms }}</li>
+                    <li><strong>Color: </strong>{{ auto.color }}</li>
+                    <li><strong>Aire acondicionado: </strong>{{ auto.aireAcondicionado }}</li>
+                    <li><strong>Cantidad de pasajeros: </strong>{{ auto.pasajeros }}</li>
+                    <li><strong>Caja: </strong>{{ auto.manualAutomatico }}</li>
+                    <li><strong>Precio: </strong>${{ auto.precioAlquilerPorDia }}</li>
+                </ul>
+                {% if auto.disponible %}
+                <div class="buttons">
+                  <a class="button is-primary" href="/add-client/{{ auto.id }}">
+                    <strong>Nuevo alquiler</strong>
+                  </a>
+                  <a class="button is-light" onclick="goBack()">
+                    Cancelar
+                  </a>
+                </div>
+                {% else %}               
+                <div class="buttons">
+                  <form action="/return-car/{{ rental.id }}" method="POST">
+                  <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                  <button class="button is-danger is-outlined" type="submit">
+                    <strong>Finalizar alquiler</strong>
+                  </button>
+                </form>
+                  <a class="button is-light"  onclick="goBack()">
+                    Volver
+                  </a>
+                </div>
+                {% endif %}     
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>
+{% endblock %}
