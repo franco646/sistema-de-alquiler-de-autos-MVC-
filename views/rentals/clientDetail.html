@@ -1,0 +1,41 @@
+{% extends "main.html" %}
+{% block body %}
+<div class="container is-max-desktop">
+    <div class="notification is-primary">
+        <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-content">
+                  <p class="title is-4">{{ cliente.nombres }} {{ cliente.apellidos }}</p>
+                  <p class="subtitle is-6">{{ auto.año }}</p>
+                </div>
+              </div>
+          
+              <div class="content">
+                <ul>
+                    <li><strong>Tipo de documento: </strong>{{ cliente.tipoDocumento }}</li>
+                    <li><strong>Numero de documento: </strong>{{ cliente.numeroDocumento }}</li>
+                    <li><strong>Fecha de nacimiento: </strong>{{ cliente.fechaNacimieto }}</li>
+                    <li><strong>Nacionalidad: </strong>{{ cliente.nacionalidad }}</li>
+                    <li><strong>Direccion: </strong>{{ cliente.direccion }}</li>
+                    <li><strong>Telefono: </strong>{{ cliente.telefono }}</li>
+                    <li><strong>Email: </strong>{{ cliente.email }}</li>
+                </ul>
+                <div class="buttons">
+                  <form action="/return-car/{{ rental.id }}" method="POST">
+                  <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                  <button class="button is-danger is-outlined" type="submit">
+                    <strong>Finalizar alquiler</strong>
+                  </button>
+                </form>
+                  <a class="button is-light" onclick="goBack()">
+                    Volver
+                  </a>
+                </div>        
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>
+
+{% endblock %}
