@@ -2,22 +2,14 @@ const fs = require('fs');
 const { validationResult } = require('express-validator');
 const Auto = require('../models/auto');
 
-const AUTOS_POR_PAGINA = 2;
-
 exports.getHome = (req, res, next) => {
-  const { page } = req.query;
-
-  Auto.findAndCountAll({
-    limit: AUTOS_POR_PAGINA,
-    offset: (page - 1) * AUTOS_POR_PAGINA,
+  Auto.findAll({
     where: { disponible: true },
   })
-
     .then((autos) => {
       res.render('carsList', {
         path: '/',
-        autos: autos.rows,
-        cantidadDePaginas: autos.count / AUTOS_POR_PAGINA,
+        autos,
       });
     })
     .catch((err) => {
