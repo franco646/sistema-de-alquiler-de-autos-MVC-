@@ -57,15 +57,7 @@
     </div>
     {% endif %}
 </table>
-<nav class="pagination is-centered" role="navigation" aria-label="pagination">
-  <a class="pagination-previous">Previous</a>
-  <a class="pagination-next">Next page</a>
-  <ul class="pagination-list">
-    {% for i in range(0, cantidadDePaginas) -%}
-    <li><a class="pagination-link" aria-label="Goto page 45" href="/?page={{ loop.index }}">{{ loop.index }}</a></li>
-    {%- endfor %}
-  </ul>
-</nav>
+
 <div class="modal">
   <div class="modal-background"></div>
   <div class="modal-content">
