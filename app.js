@@ -44,4 +44,4 @@ initRentalModule(app, container);
 const autoController = container.get('AutoController');
 app.get('/', container.get('IsAuth'), autoController.index.bind(autoController));
 
-module.exports = app;
+app.listen(process.env.PORT || 3002);

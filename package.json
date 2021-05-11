@@ -8,7 +8,7 @@
     "css-watch": "npm run css-build -- --watch",
     "test": "jest",
     "dev": "nodemon bin/www",
-    "start": "node bin/www"
+    "start": "node app.js"
   },
   "engines": {
     "node": "14.x"
