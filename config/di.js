@@ -37,7 +37,7 @@ const {
 function configureMainSequelizeDatabase() {
   const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: 'db/db.sqlite',
+    storage: process.env.DB_PATH,
   });
   return sequelize;
 }
@@ -45,7 +45,7 @@ function configureMainSequelizeDatabase() {
 function configureSessionSequelizeDatabase() {
   const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: 'db/db.sqlite',
+    storage: process.env.SESSION_DB_PATH,
   });
   return sequelize;
 }
@@ -53,7 +53,7 @@ function configureSessionSequelizeDatabase() {
 function configureMulter() {
   const storage = multer.diskStorage({
     destination(req, file, cb) {
-      cb(null, 'uploads/img');
+      cb(null, process.env.IMAGE_UPLOAD_DIR);
     },
     filename(req, file, cb) {
       cb(null, `${file.fieldname}-${Date.now()}`);
@@ -76,7 +76,7 @@ function configureAuthMiddlware() {
 function configureSession(container) {
   const sequelize = container.get('SessionSequelize');
   const sessionOptions = {
-    secret: 'my secret',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: new SequelizeStore({ db: sequelize }),
