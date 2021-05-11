@@ -1,0 +1,45 @@
+{% extends "main.njk" %}
+{% block body %}
+
+<div class="container" style="position: relative; height: 75vh;">
+    <div class="box" style="position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); width: 80%; ">
+        <form action="/auth/signin" method="POST" novalidate>
+            <input type="hidden" name="id" value="{{ user.id }}" readonly>
+            <div class="field">
+                <label class="label">Email</label>
+                <div class="control">
+                <input class="input {% for error in errores %} {% if error.param === 'email' %} is-danger {% endif %} {% endfor %}" type="email" placeholder="Ej: usuario@gmail.com" name="email" value="{{ user.email }}">
+                </div>
+            </div>
+            
+            <div class="field">
+                <label class="label">Contraseña</label>
+                <div class="control">
+                <input class="input {% for error in errores %} {% if error.param === 'contraseña' or error.param === 'confirmarContraseña' %} is-danger {% endif %} {% endfor %}" type="password" name="contraseña" value="{{ user.contraseña }}">
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Confirmar Contraseña</label>
+                <div class="control">
+                <input class="input {% for error in errores %} {% if error.param === 'contraseña' or error.param === 'confirmarContraseña' %} is-danger {% endif %} {% endfor %}" type="password" name="confirmarContraseña" value="{{ user.confirmarContraseña }}">
+                </div>
+            </div>
+
+            {% if error %}
+                <div class="notification is-danger" style="margin: 0%;">
+                {{ error }}
+                </div>
+            {% endif %}
+            
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+            
+            <div class="field is-grouped">
+                <div class="control">
+                  <button class="button is-link" type="submit">Registrarse</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

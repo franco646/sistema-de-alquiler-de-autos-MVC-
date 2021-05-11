@@ -1,0 +1,37 @@
+{% extends "main.njk" %}
+{% block body %}
+
+<div class="container" style="position: relative; height: 75vh;">
+    <div class="box" style="position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); width: 80%; ">
+        <form action="/auth/login" method="POST" novalidate>
+            <input type="hidden" name="id" value="{{ user.id }}" readonly>
+            <div class="field">
+                <label class="label">Email</label>
+                <div class="control">
+                <input class="input" type="email" placeholder="Ej: usuario@gmail.com" name="email" value="{{ user.email or 'usuario@prueba.com' }}">
+                </div>
+            </div>
+            
+            <div class="field">
+                <label class="label">Contraseña</label>
+                <div class="control">
+                <input class="input" type="password" name="contraseña" value="{{ user.contraseña or 'contraseña' }}">
+                </div>
+            </div>
+
+            {% if error %}
+                <div class="notification is-danger" style="margin-block: 2%;">
+                {{ error }}
+                </div>
+            {% endif %}
+
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+            <div class="field is-grouped">
+                <div class="control">
+                  <button class="button is-link" type="submit">iniciar sesión</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

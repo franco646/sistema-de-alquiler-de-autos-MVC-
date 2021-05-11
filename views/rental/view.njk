@@ -1,0 +1,148 @@
+{% extends "main.njk" %}
+{% block body %}
+
+<div class="content is-normal">
+  <div class="columns is-multiline is-vcentered" style="width: 80%; margin: auto;">
+    <div class="column is-half">
+      <h1 style="text-align: center;">Datos del alquiler</h1>
+      <div class="box">
+        <div class="table-container">
+          <table>
+            <tbody>
+              <tr>
+                <td><strong>Aluiler desde: </strong>{{ rental.alquilerDesde }}</td>
+              </tr>
+              <tr>
+                <td><strong>Alquiler Hasta: </strong>{{ rental.alquilerHasta }}</td>
+              </tr>
+              <tr>
+                <td><strong>Medio de pago: </strong>{{ rental.medioDePago }}</td>
+              </tr>
+              <tr>
+                <td><strong>Total: $ </strong>{{ rental.total }}</td>
+              </tr>
+              <tr>
+                <td><strong>Estado: </strong>{{ rental.estado }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="block" style="text-align: center;">
+          {% if rental.estado === 'Alquilado' %}
+            <form action="/rentals/finish/{{ rental.id }}" method="POST" style="display: inline-flex">
+              <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+              <button type="submit" class="button is-danger">Finalizar alquiler</button>
+            </form>
+          {% else %}
+            <form action="/rentals/delete/{{ rental.id }}" method="POST">
+              <div class="data" data-value="rental" data-active-rentals="{% if rental.estado === 'Alquilado' %} 1 {% else %} 0 {% endif %}" ></div>
+              <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+              <button type="submit" class="button is-danger delete-button">
+                <span>Borrar</span>
+                <span class="icon is-small">
+                  <i class="fas fa-trash-alt"></i>
+                </span>
+              </button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+      <div class="column is-half">
+        {% if rental.Auto.imagen %}
+          <figure class="image is-2by1">
+            <img src="/{{ rental.Auto.imagen }}" alt="Imagen de {{ rental.Auto.marca }} {{ rental.Auto.modelo }}">
+          </figure>
+        {% else %}
+          <div class="notification is-danger" style="text-align: center;">
+              <strong>Imagen no disponible.</strong>
+          </div>
+        {% endif %}
+      </div>
+        <div class="box" style="width: 100%;">
+        <h1 style="text-align: center;">Datos del auto ({{ rental.Auto.marca }} {{ rental.Auto.modelo }} - {{ rental.Auto.año }})</h1>
+        {% if rental.Auto %}
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                    <th>Kilometros</th>
+                    <th>Color</th>
+                    <th>Aire acondicionado (Si/No)</th>
+                    <th>Pasajeros</th>
+                    <th>Transmisión</th>
+                    <th>Precio por dia </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ rental.Auto.kms }}</td>
+                  <td>{{ rental.Auto.color }}</td>
+                  <td>{{ rental.Auto.aireAcondicionado }}</td>
+                  <th>{{ rental.Auto.pasajeros }}</th>
+                  <td>{{ rental.Auto.manualAutomatico }}</td> 
+                  <td>$ {{ rental.Auto.precioAlquilerPorDia }}</td>
+                  <td>
+                    <a class="button is-link" href="/cars/view/{{ rental.Auto.id }}">
+                      <span class="icon">
+                        <i class="fas fa-search"></i>
+                      </span>
+                    </a>
+                  </td>       
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+            <div class="notification is-danger" style="text-align: center;">
+              <strong>Datos del auto no disponibles.</strong>
+            </div>
+        {% endif %}
+      </div>
+        <div class="box" style="width: 100%;" >
+        <h1 style="text-align: center;">Datos del cliente ({{ rental.Client.nombres }} {{ rental.Client.apellidos }})</h1>
+        {% if rental.Client %}
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                    <th>Tipo de documento</th>
+                    <th>Numero de documento</th>
+                    <th>Fecha de nacimiento</th>
+                    <th>Nacionalidad</th>
+                    <th>Dirección</th>
+                    <th>Telefono</th>
+                    <th>Email</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ rental.Client.tipoDocumento }}</td>
+                  <td>{{ rental.Client.numeroDocumento }}</td>
+                  <td>{{ rental.Client.fechaNacimiento }}</td>
+                  <th>{{ rental.Client.nacionalidad }}</th>
+                  <td>{{ rental.Client.direccion }}</td> 
+                  <td>{{ rental.Client.telefono }}</td>    
+                  <td>{{ rental.Client.email }}</td>    
+                  <td>
+                    <a class="button is-link" href="/clients/view/{{ rental.Client.id }}">
+                      <span class="icon">
+                        <i class="fas fa-search"></i>
+                      </span>
+                    </a>
+                  </td> 
+                </tr>
+              </tbody>
+            </table>
+            </div>
+            {% else %}
+            <div class="notification is-danger" style="text-align: center;">
+              <strong>Datos del cliente no disponible.<strong>
+            </div>
+            {% endif %}
+    </div>
+  </div>
+</div>
+
+{% include "modal.njk" %}
+{% endblock %}

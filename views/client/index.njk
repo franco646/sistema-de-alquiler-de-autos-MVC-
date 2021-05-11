@@ -1,0 +1,96 @@
+{% extends "main.njk" %}
+{% block body %}
+<div class="table-container">
+<table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr>
+        <th>Nro</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Tipo de documento</th>
+        <th>Nro. de documento</th>
+        <th>Fecha de nacimiento</th>
+        <th>Aire acondicionado</th>
+        <th>Direccion</th>
+        <th>Telefono</th>
+        <th>Email</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    {% for client in clients %}
+    <tr>
+      <th>{{ loop.index }}</th>
+      <td>{{ client.nombres }}</td>
+      <td>{{ client.apellidos }}</td>
+      <td>{{ client.tipoDocumento }}</td>
+      <td>{{ client.numeroDocumento }}</td>
+      <td>{{ client.fechaNacimiento }}</td>
+      <td>{{ client.nacionalidad }}</td>
+      <td>{{ client.direccion }}</td>
+      <td>{{ client.telefono }}</td>
+      <td>{{ client.email }}</td>
+
+      <td>
+          <div class="buttons are-small">
+            <div class="field is-grouped is-grouped-centered">
+                <a class="button is-link" href="/clients/view/{{ client.id }}">Ver en detalle</a>
+                <a class="button is-link" href="/clients/add?id={{ client.id }}">Editar</a>
+                <form action="/clients/delete/{{ client.id }}" method="POST">
+                  <div class="data" data-value="client" data-active-rentals="{% set count = 0 %}{{ count }}{% for rental in client.Rentals %}{% if rental.estado === 'Alquilado' %}{% set count = count + 1 %}{{ count }}{% endif %}{% endfor %}" >
+                  <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                  <button type="submit" class="button is-danger boton-eliminar delete-button">
+                    <span>Borrar</span>
+                    <span class="icon is-small">
+                      <i class="fas fa-times"></i>
+                    </span>
+                  </button>
+                </form>
+              </div>
+          </div>
+      </td>
+    </tr>
+    {% endfor %}
+    {% if error %}
+      <div class="notification is-danger" style="margin: 0%;">
+        {{ error }}
+      </div>
+    {% endif %}
+    {% if clients.length === 0 %}
+      <div class="message-header">
+        <p>Esta lista esta vacia</p>
+      </div>
+    {% endif %}
+</table>
+</div>
+
+<div class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <article class="message is-danger">
+      <div class="message-header">
+        <p>Advertencia</p>
+        <button class="delete cerrar-modal" aria-label="delete"></button>
+      </div>
+      <div class="message-body">
+        <div id="mensaje-modal">
+
+        </div>
+        <div class="field is-grouped" style="margin-top: 3%;">
+          <p class="control">
+            <button class="button is-danger confirmar-modal">
+              Confirmar
+            </button>
+          </p>
+          <p class="control">
+            <button class="button cerrar-modal">
+              Cancelar
+            </button>
+          </p>
+        </div>
+      </div>
+    </article>
+  </div>
+  <button class="modal-close is-large cerrar-modal" aria-label="close"></button>
+</div>
+{% include "modal.njk" %}
+{% endblock %}

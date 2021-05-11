@@ -1,0 +1,126 @@
+<nav class="navbar is-transparent">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/">
+        <img src="\img\sistema-de-alquiler-de-autos.png" alt="sistema de alquiler de autos" width="150">
+      </a>
+    </div>
+  
+    <div id="navbarExampleTransparentExample" class="navbar-menu">
+        <div class="navbar-start">
+            {% if isAuthenticated %}     
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link {% if path.includes('/cars') %} is-active {% endif %}" >
+                Autos
+              </a>
+      
+              <div class="navbar-dropdown">
+                <a class="navbar-item {% if path === '/cars' %} is-active {% endif %}" href="/cars">
+                  Lista
+                </a>
+                <a class="navbar-item {% if path === '/cars/add' %} is-active {% endif %}" href="/cars/add">
+                  Nuevo
+                </a>
+              </div>
+            </div>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link {% if path.includes('/clients') %} is-active {% endif %}">
+                Clientes
+              </a>
+      
+              <div class="navbar-dropdown">
+                <a class="navbar-item {% if path === '/clients' %} is-active {% endif %}" href="/clients">
+                  Lista
+                </a>
+                <a class="navbar-item {% if path === '/clients/add' %} is-active {% endif %}" href="/clients/add">
+                  Nuevo
+                </a>
+              </div>
+            </div>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link {% if path.includes('/rentals') %} is-active {% endif %}">
+                Alquileres
+              </a>
+      
+              <div class="navbar-dropdown">
+                <a class="navbar-item {% if path === '/rentals' %} is-active {% endif %}" href="/rentals">
+                  Lista
+                </a>
+                <a class="navbar-item  {% if path === '/rentals/add' %} is-active {% endif %}" href="/rentals/add">
+                  Nuevo
+                </a>
+              </div>
+            </div>
+            
+            {% endif %}
+          </div>
+
+        </div>
+    </div>
+  
+    {% if isAuthenticated %}
+      <div class="navbar-end">
+        <form action="/auth/logout" method="POST" class="navbar-item" id="logout-form">
+          <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+          <a class="navbar-item" onclick="document.getElementById('logout-form').submit();">
+            <span>Cerrar sesión</span>
+            <span class="icon"> 
+              <i class="fas fa-sign-out-alt"></i>
+            </span>
+          </a>
+        </form>
+        <div class="navbar-item">
+          <div class="field is-grouped">
+            <p class="control">
+              {% if path.includes('/clients') %}
+              <a class="button is-primary {% if path.includes('/add') %} is-outlined {% endif %}" href="/clients/add">
+                <span>Nuevo cliente</span>
+                <span class="icon">
+                  <i class="fas fa-plus"></i>
+                </span>
+              </a>
+              {% endif %}
+              {% if path.includes('/cars') %}
+              <a class="button is-primary {% if path.includes('/add') %} is-outlined {% endif %}" href="/cars/add">
+                <span>Nuevo auto</span>
+                <span class="icon">
+                  <i class="fas fa-plus"></i>
+                </span>
+              </a>
+              {% endif %}
+              {% if path.includes('/rentals') %}
+              <a class="button is-primary {% if path.includes('/add') %} is-outlined {% endif %}" href="/rentals/add">
+                <span>Nuevo alquiler</span>
+                <span class="icon">
+                  <i class="fas fa-plus"></i>
+                </span>
+              </a>
+              {% endif %}
+            </p>
+          </div>
+        </div>
+      </div>
+    {% else %}
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <a class="button is-primary" href="/auth/signin">
+            <strong>Registrarse</strong>
+            <span class="icon">
+              <i class="fas fa-user-plus"></i>
+            </span>
+          </a>
+          <a class="button is-primary" href="/auth/login">
+            <div>Iniciar sesion</div>
+            <span class="icon">
+              <i class="fas fa-sign-in-alt"></i> 
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+      </div>
+    </div>
+  </nav>

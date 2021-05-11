@@ -1,0 +1,48 @@
+@charset "utf-8";
+
+$sunshine: #F9BA32;
+$steel-blue: #426E86;
+$bone: #F8F1E5;
+$coal: #2F3131;
+
+$primary: $bone;
+$danger: $sunshine;
+$link: $steel-blue;
+
+$table-color: $coal;
+$table-cell-heading-color: $coal;
+$table-head-cell-color: $coal;
+
+$navbar-item-img-max-height: 4rem;
+$navbar-background-color: $coal;
+$navbar-dropdown-background-color: $coal;
+$navbar-item-color: $primary;
+$navbar-item-active-color: $danger;
+$navbar-dropdown-arrow: $danger;
+$navbar-item-hover-color: $danger;
+$navbar-dropdown-item-hover-color: $danger;
+$navbar-dropdown-item-active-color: $danger;
+
+@import "../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "../../node_modules/@fortawesome/fontawesome-free/scss/solid.scss";
+
+@import "../../node_modules/bulma/sass/utilities/_all.sass";
+@import "../../node_modules/bulma/sass/base/_all.sass";
+@import "../../node_modules/bulma/sass/elements/button.sass";
+@import "../../node_modules/bulma/sass/elements/container.sass";
+@import "../../node_modules/bulma/sass/elements/box.sass";
+@import "../../node_modules/bulma/sass/elements/title.sass";
+@import "../../node_modules/bulma/sass/elements/table.sass";
+@import "../../node_modules/bulma/sass/elements/content.sass";
+@import "../../node_modules/bulma/sass/elements/icon.sass";
+@import "../../node_modules/bulma/sass/elements/notification.sass";
+@import "../../node_modules/bulma/sass/elements/image.sass";
+
+@import "../../node_modules/bulma/sass/components/navbar.sass";
+@import "../../node_modules/bulma/sass/components/message.sass";
+@import "../../node_modules/bulma/sass/components/modal.sass";
+@import "../../node_modules/bulma/sass/components/card.sass";
+
+@import "../../node_modules/bulma/sass/form/_all.sass";
+
+@import "../../node_modules/bulma/sass/grid/columns.sass";

@@ -1,0 +1,104 @@
+{% extends "main.njk" %}
+{% block body %}
+<div class="container" style="margin-block: 3%">
+    <div class="box">
+        <form action="/clients/add" method="POST" id="formulario" novalidate>
+          <input type="hidden" name="id" value="{{ client.id }}" readonly>
+
+              <div class="container" style="margin-block: 1.5em;">
+                <h1 class="title">
+                  {% if not client.id %}
+                    Nuevo cliente
+                  {% else %}
+                   Editar cliente
+                  {% endif %}
+                </h1>
+              </div>
+
+            <div class="field">
+                <label class="label">Nombres</label>
+                <div class="control">
+                  <input class="input" type="text" name="nombres" value="{{ client.nombres }}">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Apellidos</label>
+                <div class="control">
+                  <input class="input" type="text" name="apellidos" value="{{ client.apellidos }}">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Nro. documento</label>
+            </div>
+            <div class="field is-horizontal">
+                <div class="field">
+                    <div class="control">
+                      <div class="select">
+                        <select name="tipoDocumento">
+                          <option {% if client.tipoDocumento === 'D.N.I' %} selected {% endif %}>D.N.I.</option>
+                          <option {% if client.tipoDocumento === 'Pasaporte' %} selected {% endif %}>Pasaporte</option>
+                          <option {% if client.tipoDocumento === 'L.c' %} selected {% endif %}>L.C</option>
+                        </select>
+                      </div>
+                    </div>
+                </div>
+                <input class="input" type="text" name="numeroDocumento" value="{{ client.numeroDocumento }}">
+            </div>
+
+            <div class="field">
+              <label class="label">Fecha de nacimiento</label>
+              <div class="control">
+                <input class="input" type="date" name="fechaNacimiento" id="input-fecha-de-nacimiento" value="{{ client.fechaNacimiento }}">
+              </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Nacionalidad</label>
+                <div class="control">
+                  <input class="input" type="text" name="nacionalidad" value="{{ client.nacionalidad }}">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Direccion</label>
+                <div class="control">
+                  <input class="input" type="text" name="direccion" value="{{ client.direccion }}">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Telefono</label>
+                <div class="control">
+                  <input class="input" type="tel" name="telefono" value="{{ client.telefono }}">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Email</label>
+                <div class="control">
+                  <input class="input" type="email" name="email" id="email-input" value="{{ client.email }}">
+                </div>
+            </div>
+
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+            {% if error %}
+                <div class="notification is-danger">
+                {{ error.message }}
+                </div>
+            {% endif %}
+
+            <div class="field is-grouped" style="margin-top: 2%;">
+                <div class="control">
+                  <button class="button is-link" type="submit">Finalizar</button>
+                </div>
+                <div class="control">
+                  <a class="button is-link is-danger" href="/clients">Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+  </div>
+{% endblock %}

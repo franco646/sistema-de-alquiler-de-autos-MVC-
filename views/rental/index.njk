@@ -1,0 +1,113 @@
+{% extends "main.njk" %}
+{% block body %}
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+      <thead>
+        <tr>
+          <th>Nro</th>
+          <th>Auto</th>
+          <th>Nombre del cliente</th>
+          <th>Alquilado desde</th>
+          <th>Alquilado hasta</th>
+          <th>Medio de pago</th>
+          <th>Creado por</th>
+          <th>Estado</th>
+          <th>Total</th> 
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      {% for rental in rentals %}
+      <tr>
+        <th>{{ loop.index }}</th>
+        <td>
+          {% if rental.Auto %}
+            <a href="/cars/view/{{ rental.Auto.id }}">{{ rental.Auto.marca }} {{ rental.Auto.modelo }}</a>
+          {% else %}
+            <div style="color: red;">
+              Auto no disponible
+            </div>
+          {% endif %}
+        </td>
+        <td>
+          {% if rental.Client %}
+            <a href="/clients/view/{{ rental.Client.id }}">{{ rental.Client.nombres }} {{ rental.Client.apellidos }}</a>
+          {% else %}
+            <div style="color: red;">
+              Cliente no disponible
+            </div>
+          {% endif %} 
+        </td>    
+        <td>{{ rental.alquilerDesde }}</td>
+        <td>{{ rental.alquilerHasta }}</td>
+        <td>{{ rental.medioDePago }}</td>
+        <td>{{ rental.User.email }}</td>
+        <th>{{ rental.estado }}</th>
+        <td>$ {{ rental.total }}</td>
+        <td>
+          <div class="field is-grouped is-grouped-centered">
+          {% if rental.estado === 'Alquilado' %}
+              <a class="button is-link is-small" href="/rentals/view/{{ rental.id }}" style="margin-right: 8px">ver</a>
+              <form action="/rentals/finish/{{ rental.id }}" method="POST">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                <button type="submit" class="button is-danger is-small">Finalizar alquiler</button>
+              </form>
+          {% else %}
+            <a class="button is-link is-small" href="/rentals/view/{{ rental.id }}" style="margin-right: 8px">ver</a>
+            <form action="/rentals/delete/{{ rental.id }}" method="POST">
+              <div class="data" data-value="rental" data-active-rentals="{% if rental.estado === 'Alquilado' %} 1 {% else %} 0 {% endif %}" >
+              <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+              <button type="submit" class="button is-danger is-small delete-button">
+                <span>Borrar</span>
+                <span class="icon is-small">
+                  <i class="fas fa-times"></i>
+                </span>
+              </button>
+            </form>
+          {% endif %}
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+      {% if error %}
+        <div class="notification is-danger" style="margin: 0%;">
+          {{ error }}
+        </div>
+      {% endif %}
+      {% if rentals.length === 0 %}
+      <div class="message-header">
+        <p>Esta lista esta vacia</p>
+      </div>
+      {% endif %}
+  </table>
+</div>
+<div class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <article class="message is-danger">
+      <div class="message-header">
+        <p>Advertencia</p>
+        <button class="delete cerrar-modal" aria-label="delete"></button>
+      </div>
+      <div class="message-body">
+        <div id="mensaje-modal">
+
+        </div>
+        <div class="field is-grouped" style="margin-top: 3%;">
+          <p class="control">
+            <button class="button is-danger confirmar-modal">
+              Confirmar
+            </button>
+          </p>
+          <p class="control">
+            <button class="button cerrar-modal">
+              Cancelar
+            </button>
+          </p>
+        </div>
+      </div>
+    </article>
+  </div>
+  <button class="modal-close is-large cerrar-modal" aria-label="close"></button>
+</div>
+{% include "modal.njk" %}
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "main.njk" %}
+{% block body %}
+
+<div class="content is-normal">
+<div class="columns is-multiline is-vcentered" style="width: 80%; margin: auto;">
+  <div class="column">
+  <h1 style="text-align: center;">{{ auto.marca }} {{ auto.modelo }} ({{ auto.año }})</h1>
+  <div class="box">
+    <div class="table-container">
+    <table>
+      <tbody>
+        <tr>
+          <td><strong>Kilometros: </strong>{{ auto.kms }}</td>
+        </tr>
+        <tr>
+          <td><strong>Color: </strong>{{ auto.color }}</td>
+        </tr>
+        <tr>
+          <td><strong>Aire acondicionado (si/no): </strong>{{ auto.aireAcondicionado }}</td>
+        </tr>
+        <tr>
+          <td><strong>Cantidad de pasajeros: </strong>{{ auto.pasajeros }}</td>
+        </tr>
+        <tr>
+          <td><strong>Transmisión: </strong>{{ auto.manualAutomatico }}</td>
+        </tr>
+        <tr>
+          <td><strong>Precio: </strong>${{ auto.precioAlquilerPorDia }}</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="block" style="text-align: center;">
+      <a class="button is-link" href="/rentals/add?carId={{ auto.id }}">Nuevo alquiler</a>
+      <a class="button is-link" href="/cars/add?id={{ auto.id }}">Editar</a>
+      <form action="/cars/delete/{{ auto.id }}" method="POST" style="display: inline-flex;">
+        <div class="data" data-value="car" data-active-rentals="{% set count = 0 %}{{ count }}{% for rental in auto.Rentals %}{% if rental.estado === 'Alquilado' %}{% set count = count + 1 %}{{ count }}{% endif %}{% endfor %}">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        <button type="submit" class="button is-danger delete-button">
+          <span>Borrar</span>
+          <span class="icon is-small">
+            <i class="fas fa-trash-alt"></i>
+          </span>
+        </button>
+      </form>
+    </div>
+  </div>
+  </div>
+  <div class="column">
+    {% if auto.imagen %}
+    <figure class="image is-2by1">
+      <img src="/{{ auto.imagen }}" alt="Imagen de {{ auto.marca }} {{ auto.modelo }}">
+    </figure>
+    {% else %}
+    <div class="box">
+      <div class="notification is-danger" style="text-align: center;">
+        <strong>Imagen no disponible</strong>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <div class="column">
+    <div class="box">
+    <h1 style="text-align: center;">Ultimos alquileres</h1>
+      <div class="table-container">
+    {% if auto.Rentals.length > 0 %}
+        <table>
+          <thead>
+            <tr>
+              <th>Alquilado desde</th>
+              <th>Alquilado hasta</th>
+              <th>Medio de pago</th>
+              <th>Estado</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+      {% for rental in auto.Rentals %}
+          <tbody>
+            <tr>
+              <td>{{ rental.alquilerDesde }}</td>
+              <td>{{ rental.alquilerHasta }}</td>
+              <td>{{ rental.medioDePago }}</td>
+              <th>{{ rental.estado }}</th>
+              <td>$ {{ rental.total }}</td>    
+              <td>
+                <a class="button is-link" href="/rentals/view/{{ rental.id }}">
+                <span class="icon">
+                  <i class="fas fa-search"></i>
+                </span>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+      {% endfor %}
+        </table>
+        </div>
+    {% else %}
+      <div class="notification is-danger" style="text-align: center;">
+        <strong>No hay ningun alquiler para este auto</strong>
+      </div>
+    {% endif %}
+  </div>
+  </div>
+</div>
+</div>
+{% include "modal.njk" %}
+{% endblock %}

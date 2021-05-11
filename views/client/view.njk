@@ -1,0 +1,97 @@
+{% extends "main.njk" %}
+{% block body %}
+
+<div class="content is-normal">
+    <div class="columns is-multiline is-vcentered" style="width: 90%; margin: auto;">
+        <div class="column is-half">
+            <h1 style="text-align: center;">{{ client.nombres }} {{ client.apellidos }}</h1>
+            <div class="box">
+                <div class="table-container">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><strong>Tipo de documento: </strong>{{ client.tipoDocumento }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Numero de documento: </strong>{{ client.numeroDocumento }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fecha de nacimiento: </strong>{{ client.fechaNacimiento }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Nacionalidad: </strong>{{ client.nacionalidad }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dirección: </strong>{{ client.direccion }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Telefono: </strong>{{ client.telefono }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email: </strong>{{ client.email }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="block" style="text-align: center;">
+                    <a class="button is-link" href="/rentals/add?clientId={{ client.id }}">Nuevo alquiler</a>
+                    <a class="button is-link" href="/clients/add?id={{ client.id }}">Editar</a>
+                    <form action="/clients/delete/{{ client.id }}" method="POST" style="display: inline-flex;">
+                        <div class="data" data-value="client" data-active-rentals="{% set count = 0 %}{{ count }}{% for rental in client.Rentals %}{% if rental.estado === 'Alquilado' %}{% set count = count + 1 %}{{ count }}{% endif %}{% endfor %}"></div>
+                        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                        <button type="submit" class="button is-danger delete-button">
+                            <span>Borrar</span>
+                            <span class="icon is-small">
+                                <i class="fas fa-trash-alt"></i>
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="column is-half">
+            <div class="box">
+                <h1 style="text-align: center;">Ultimos alquileres</h1>
+                {% if client.Rentals.length > 0 %}
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                <th>Alquilado desde</th>
+                                <th>Alquilado hasta</th>
+                                <th>Medio de pago</th>
+                                <th>Estado</th>
+                                <th>Total</th>
+                                </tr>
+                            </thead>
+                            {% for rental in client.Rentals %}
+                                <tbody>
+                                    <tr>
+                                    <td>{{ rental.alquilerDesde }}</td>
+                                    <td>{{ rental.alquilerHasta }}</td>
+                                    <td>{{ rental.medioDePago }}</td>
+                                    <th>{{ rental.estado }}</th>
+                                    <td>${{ rental.total }}</td>      
+                                    <td>
+                                        <a class="button is-link" href="/rentals/view/{{ rental.id }}">
+                                            <span class="icon">
+                                                <i class="fas fa-search"></i>
+                                            </span>
+                                        </a>
+                                    </td>    
+                                    </tr>
+                                </tbody>
+                            {% endfor %}
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="notification is-danger" style="text-align: center;">
+                        <strong>No hay historial de alquileres para este cliente</strong>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% include "modal.njk" %}
+{% endblock %}
