@@ -2,6 +2,7 @@ const Rental = require('../entity/rentalEntity');
 const AutoEntity = require('../../Car/entity/auto');
 const ClientEntity = require('../../client/entity/clientEntity');
 const UserEntity = require('../../Auth/entity/userEntity');
+const { v4: uuidv4 } = require('uuid');
 
 exports.fromDataToEntity = ({
   id,
@@ -14,15 +15,15 @@ exports.fromDataToEntity = ({
   AutoId,
   user,
 }) => new Rental({
-  id: Number(id),
+  id: id || uuidv4(),
   alquilerDesde,
   alquilerHasta,
   medioDePago,
   total,
   estado,
-  ClientId: Number(ClientId),
-  AutoId: Number(AutoId),
-  UserId: Number(user.id),
+  ClientId,
+  AutoId,
+  UserId: user.id,
 });
 
 exports.fromModelToEntity = ({

@@ -26,7 +26,9 @@ module.exports = class ClientRepostitory {
   }
 
   async save(client) {
-    const clientModel = await this.clientModel.build(client, { isNewRecord: !client.id });
+    const clientExists = await this.clientModel.findByPk(client.id);
+
+    const clientModel = await this.clientModel.build(client, { isNewRecord: !clientExists });
     await clientModel.save();
 
     return fromDataToEntity(clientModel);

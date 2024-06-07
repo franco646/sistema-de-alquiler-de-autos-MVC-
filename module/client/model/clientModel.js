@@ -1,11 +1,12 @@
 const { DataTypes, Model } = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = class ClientModel extends Model {
   static setup(sequelizeInstance) {
     ClientModel.init({
       id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.UUID,
+        defaultValue: uuidv4,
         allowNull: false,
         primaryKey: true,
       },

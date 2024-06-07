@@ -11,8 +11,10 @@ module.exports = class RentalRepository {
   }
 
   async save(rental) {
+    const rentalExists = await this.rentalModel.findByPk(rental.id);
+
     const rentalModel = await this.rentalModel.build(rental, {
-      isNewRecord: !rental.id,
+      isNewRecord: !rentalExists,
     });
     await rentalModel.save();
   }

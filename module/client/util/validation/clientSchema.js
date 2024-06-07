@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 module.exports = Joi.object({
-  id: Joi.number().required(),
+  id: Joi.string().guid({ version: ['uuidv4', 'uuidv5'] }).required(),
   nombres: Joi.string().regex(/^[a-z\d\-_\s]+$/i).required()
     .min(2)
     .max(30)

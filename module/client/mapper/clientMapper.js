@@ -1,4 +1,5 @@
 const Client = require('../entity/clientEntity');
+const { v4: uuidv4 } = require('uuid');
 
 exports.fromDataToEntity = ({
   id,
@@ -13,7 +14,7 @@ exports.fromDataToEntity = ({
   email,
   Rentals,
 }) => new Client({
-  id: Number(id),
+  id: id || uuidv4(),
   nombres,
   apellidos,
   tipoDocumento,

@@ -26,7 +26,10 @@ module.exports = class authRepository {
     if (!user) {
       throw new UserNotDefinedError();
     }
-    const userModel = await this.userModel.build(user, { isNewRecord: !user.id });
+
+    const userExists = await this.userModel.findByPk(user.id);
+
+    const userModel = await this.userModel.build(user, { isNewRecord: !userExists });
     await userModel.save();
   }
 };

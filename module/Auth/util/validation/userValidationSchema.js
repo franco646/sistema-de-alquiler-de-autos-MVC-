@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 module.exports = Joi.object({
-  id: Joi.number(),
+  id: Joi.string().guid({ version: ['uuidv4', 'uuidv5'] }).required(),
   email: Joi.string().email().required()
     .messages({
       'string.empty': 'Ingrese el email del cliente.',

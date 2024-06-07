@@ -1,4 +1,5 @@
 const Auto = require('../entity/auto');
+const { v4: uuidv4 } = require('uuid');
 
 exports.fromDataToEntity = ({
   id,
@@ -14,7 +15,7 @@ exports.fromDataToEntity = ({
   precioAlquilerPorDia,
   Rentals,
 }) => new Auto({
-  id: Number(id),
+  id: id || uuidv4(),
   marca,
   modelo,
   año,

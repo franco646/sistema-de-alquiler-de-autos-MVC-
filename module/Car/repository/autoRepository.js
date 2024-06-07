@@ -14,7 +14,9 @@ module.exports = class AutoRepository {
   }
 
   async save(car) {
-    const modelCar = await this.autoModel.build(car, { isNewRecord: !car.id });
+    const carExists = await this.autoModel.findByPk(car.id);
+
+    const modelCar = await this.autoModel.build(car, { isNewRecord: !carExists });
     await modelCar.save();
 
     return fromDataToEntity(modelCar);

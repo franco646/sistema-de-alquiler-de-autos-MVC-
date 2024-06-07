@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 module.exports = Joi.object({
-  id: Joi.number().required(),
+  id: Joi.string().guid({ version: ['uuidv4', 'uuidv5'] }).required(),
   alquilerDesde: Joi.date().required()
     .messages({
       'date.base': 'Ingrese una la fecha de inicio del alquiler.',
